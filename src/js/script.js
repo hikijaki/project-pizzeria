@@ -93,7 +93,6 @@ class Product{
       /* toggle active class on thisProduct.element */
         thisProduct.element.classList.toggle('active')
     });
-
   }
 }
 
