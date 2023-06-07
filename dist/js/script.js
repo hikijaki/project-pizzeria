@@ -59,7 +59,10 @@ class Product{
     thisProduct.data = data;
 
     thisProduct.renderInMenu();
+    thisProduct.getElements();
     thisProduct.initAccordion();
+    thisProduct.initOrderForm();
+    thisProduct.processOrder();
 
     console.log ('new Product:', thisProduct);
   }
@@ -74,12 +77,22 @@ class Product{
     /* add element to menu */
       menuContainer.appendChild(thisProduct.element);
   }
+  getElements(){
+    const thisProduct = this;
+  
+    thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+    thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+    thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
+    thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+    thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+  }
+  
+
   initAccordion(){
     const thisProduct = this;
 
     /* find the clickable trigger (the element that should react to clicking) */
       const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
-
     /* START: add event listener to clickable trigger on event click */
       clickableTrigger.addEventListener('click', function(event) {
       /* prevent default action for event */
@@ -93,14 +106,40 @@ class Product{
       /* toggle active class on thisProduct.element */
         thisProduct.element.classList.toggle('active')
     });
+  }
+  initOrderForm(){
+    const thisProduct = this;
+    console.log('initOrderForm');
 
+    thisProduct.form.addEventListener('submit', function(event){
+      event.preventDefault();
+      thisProduct.processOrder();
+    });
+    
+    for(let input of thisProduct.formInputs){
+      input.addEventListener('change', function(){
+        thisProduct.processOrder();
+      });
+    }
+    
+    thisProduct.cartButton.addEventListener('click', function(event){
+      event.preventDefault();
+      thisProduct.processOrder();
+    });
+  }
+  processOrder(){
+ /*   const thisProduct = this;
+    console.log('processOrder');
+    */
   }
 }
 
   const app = {
     initMenu: function(){
-      const testProduct = new Product();
-      console.log('testProduct:', testProduct);
+      const thisApp = this;
+      for(let productData in thisApp.data.products){
+        new Product(productData, thisApp.data.products[productData]);
+      }
     },
     initData: function(){
       const thisApp = this;
@@ -118,14 +157,9 @@ class Product{
     thisApp.initMenu();
 
     console.log('thisApp.data:', thisApp.data);
-    for(let productData in thisApp.data.products){
-      new Product(productData, thisApp.data.products[productData]);
-    }
 
   },
 };
-
-
-app.initMenu()
+stfhff
 app.init()
 }
